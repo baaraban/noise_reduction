@@ -22,8 +22,7 @@ def max_svd_unit(A, epsilon=1e-10):
     return u, sigma, v
 
 
-# Restore matrix from full svd example: np.dot(U * E, V_t)
-def my_reduced_svd(A, epsilon=1e-10):
+def reduced_svd(A, epsilon=1e-10):
     current_approx = np.zeros(A.shape)
     n, m = A.shape
 
@@ -38,3 +37,12 @@ def my_reduced_svd(A, epsilon=1e-10):
         E[i] = sigma
         V_t[i, :] = v
     return U, E, V_t
+
+
+def restore_from_reduced(u, e, v_t, k=None):
+    if k is None or k >= e.shape[0]:
+        return np.dot(u * e, v_t)
+    A = np.zeros((u.shape[0], v_t.shape[0]))
+    for i in range(k):
+        A += e[i] * np.outer(u[:, i], v_t[i, :])
+    return A
