@@ -17,7 +17,7 @@ def windowed_noise_filtering(frame_matrix, window_shape, stride=1, threshold_val
     def get_svd_with_threshold(windowed_matrix):
         u, sigmas, v_t = svderko.reduced_svd(windowed_matrix, svd_precision)
         elements_to_take = calculate_elements_to_take(sigmas)
-        reproduced = svderko.restore_from_reduced(u, sigmas, v_t, elements_to_take)
+        reproduced = svderko.restore_from_reduced_svd(u, sigmas, v_t, elements_to_take)
         return reproduced
 
     A = np.zeros(frame_matrix.shape)

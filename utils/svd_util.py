@@ -22,7 +22,7 @@ def max_svd_unit(A, epsilon=1e-10):
     return u, sigma, v
 
 
-def reduced_svd(A, epsilon=1e-10):
+def reduced_svd(A, epsilon=1e-5):
     current_approx = np.zeros(A.shape)
     n, m = A.shape
 
@@ -39,10 +39,21 @@ def reduced_svd(A, epsilon=1e-10):
     return U, E, V_t
 
 
-def restore_from_reduced(u, e, v_t, k=None):
+def restore_from_reduced_svd(u, e, v_t, k=None):
     if k is None or k >= e.shape[0]:
         return np.dot(u * e, v_t)
     A = np.zeros((u.shape[0], v_t.shape[0]))
     for i in range(k):
         A += e[i] * np.outer(u[:, i], v_t[i, :])
     return A
+
+
+def full_svd(A):
+    return np.linalg.svd(A)
+
+
+def restore_from_full_svd(u, e, v_t, k=None):
+    if k is None :
+        return np.dot(u[:, :e.shape[0]] * e, v_t)
+    else :
+        return np.dot(u[:, :k] * e[:k], v_t[:k,])
