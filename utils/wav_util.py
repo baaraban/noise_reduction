@@ -2,9 +2,12 @@ import wave
 import numpy as np
 
 
-def get_wav_info(name):
-    with wave.open(name, 'r') as wf:
-        return wf.readframes(-1), wf.getnchannels(), wf.getframerate()
+def get_wav_info(filepath):
+    with wave.open(filepath, 'r') as wf:
+        return dict(filepath=filepath,
+                    frames=wf.readframes(-1),
+                    channels_count=wf.getnchannels(),
+                    frame_rate=wf.getframerate())
 
 
 def get_audio_matrix(frames, frame_rate , ms_per_column = None):
